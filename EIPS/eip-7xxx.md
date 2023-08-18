@@ -12,7 +12,7 @@ created: 2023-xx-xx
 
 ## Abstract
 
-ONCHAINID is a blockchain-based identity system that combines the functionalities of a key manager and a claim holder. The key manager holds keys to sign actions and execute instructions, while the claim holder manages claims that can be attested by third parties or self-attested. The identity contract defined by ONCHAINID, known as IIdentity, integrates these functionalities, providing a comprehensive solution for individuals and organizations to enforce compliance and access digital assets.
+ONCHAINID is a blockchain-based identity system that combines the functionalities of a key manager and a claim holder. The key manager holds keys to sign actions and execute instructions, while the claim holder manages claims that can be attested by third parties or self-attested. The identity contract defined by ONCHAINID `IIdentity` integrates these functionalities, providing a comprehensive solution for individuals and organizations to enforce compliance and access digital assets.
 
 ## Motivation
 
@@ -23,7 +23,14 @@ ONCHAINID aims to provide a self-sovereign identity system on the blockchain tha
 ## Specification
 
 ### Key Management
-Keys are cryptographic public keys, or contract addresses associated with this identity.
+Keys are cryptographic public keys, or contract addresses that have permission to operate the identity or to interact with services in its behalf.
+
+Those permissions are represented by the purposes they key is associated with. The list of purposes is an array of `uint256` and the following purposes are introduced:
+
+- `1`: MANAGEMENT keys, which can manage the identity (considered an Owner of the identity, a MANAGEMENT key have all permissions).
+- `2`: EXECUTION keys, which can call the approve method on the identity to execute transaction sent by the identity to other contracts.
+- `3`: CLAIM keys, which can add, remove and update claims on the ONCHAINID.
+
 The structure should be as follows:
 
 - `key`: A public key owned by this identity
@@ -60,11 +67,7 @@ function getKeysByPurpose(uint256 _purpose) constant returns(bytes32[] keys);
 ```
 
 #### addKey
-Adds a `_key` to the identity. The `_purpose` specifies the purpose of the key. Initially, we propose three purposes:
-
-- `1`: MANAGEMENT keys, which can manage the identity
-- `2`: EXECUTION keys, which perform executions in this identity's name (signing, logins, transactions, etc.)
-- `3`: CLAIM keys, which can add, remove and update claims on the ONCHAINID
+Adds a `_key` to the identity. The `_purpose` specifies the purpose of the key.
 
 **MUST** only be done by keys of purpose `1`, or the identity itself. If it's the identity itself, the approval process will determine its approval.
 
