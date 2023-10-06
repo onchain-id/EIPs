@@ -236,6 +236,38 @@ function getClaimIdsByTopic(uint256 _topic) external view returns(bytes32[] memo
 > An identity MAY not send all claims of a given topics but only a subset of them. An implementation COULD let the
 > identity owner select only a few claims to be presented each time.
 
+#### Self-attested claims
+
+Claims are usually issued by third parties about an identity, but some claims are intended to be created by the
+identity owner themselves. These claims are called self-attested claims.
+
+Self-attested claims addition, updates and removals MUST trigger the `ClaimAdded`, `ClaimChanged` and `ClaimRemoved`
+events, and they SHOULD be managed by the same methods `addClaim` and `removeClaim`.
+
+Self-attested claims uses the same validity check regarding signatures (algorithms are left to the appreciation of
+implementers). Specifications does not include a revoke mechanism, however the Identity contract exposes
+a `isClaimValid` method that MUST verify the claim signature and return true if it is valid, or false otherwise.
+
+The `isClaimValid` method MAY implement a revocation behavior based on timestamp, revocation lists or any other
+method deemed necessary by the implementer, returning true or false depending on the claim validity status.
+
+```solidity
+/**
+ * @dev Checks if a claim is valid.
+ * @param identity the identity contract related to the claim.
+ * @param claimTopic the claim topic of the claim
+ * @param sig the signature of the claim
+ * @param data the data field of the claim
+ * @return claimValid true if the claim is valid, false otherwise
+ */
+function isClaimValid(
+    address identity,
+    uint256 claimTopic,
+    bytes calldata sig,
+    bytes calldata data)
+external view returns (bool);
+```
+
 ### Identity usage
 
 Apart from keys and claims management, the Identity contract specified in ONCHAINID allows for execution requests and
@@ -253,7 +285,7 @@ Passes an execution instruction to the Key Manager.
 
 Execute **COULD** be used as the only accessor for `addKey`, `removeKey` and `addClaim` and `removeClaim`.
 
-Returns `executionId`: SHOULD be sent to the `approve` function, to approve or reject this execution.
+Returns `executionId`: SHOULD be sent to the `approve ` function, to approve or reject this execution.
 
 **Triggers Event**: `ExecutionRequested`
 
@@ -326,6 +358,7 @@ event Approved(uint256 indexed executionId, bool approved);
 
 ## Rationale
 
+Identities are meant to work alongside the OnchainID Claim Issuer specification.
 
 ## Backwards Compatibility
 
