@@ -324,14 +324,6 @@ MUST be triggered when `approve` was successfully called.
 event Approved(uint256 indexed executionId, bool approved);
 ```
 
-#### `KeysRequiredChanged`
-
-MUST be triggered when `changeKeysRequired` was successfully called.
-
-```solidity
-event KeysRequiredChanged(uint256 purpose, uint256 number);
-```
-
 ## Rationale
 
 
