@@ -2,7 +2,7 @@
 eip: 7xxx
 title: ONCHAINID - An Onchain Identity System
 description: Formalizing ONCHAINID, a self-sovereign identity system on Ethereum.
-author: Joachim Lebrun (@Joachim-Lebrun), Kevin Thizy (@Nakasar), Fabian Vogelsteller (@frozeman), Tony Malghem (@TonyMalghem), Luc Falempin(@lfalempin)
+author: Joachim Lebrun (@Joachim-Lebrun), Kevin Thizy (@Nakasar), Tony Malghem (@TonyMalghem), Luc Falempin(@lfalempin)
 discussions-to: //TBD
 status: Draft
 type: Standards Track
@@ -358,11 +358,13 @@ event Approved(uint256 indexed executionId, bool approved);
 
 ## Rationale
 
-Identities are meant to work alongside the OnchainID Claim Issuer specification.
+
 
 ## Backwards Compatibility
 
-There are no known standard using the previous KeyHolder and ClaimHolder proposals.
+There are no known standard using the previous KeyHolder and ClaimHolder proposals. Most methods used are inspired by
+specifications of KeyHolder and ClaimHolder introduces by Fabian Vogelsteller (@frozeman), hence application leveraging
+claims and keys functionalities should still be compatible.
 
 ## Security Considerations
 
